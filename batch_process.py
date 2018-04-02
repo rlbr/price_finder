@@ -8,16 +8,21 @@ def get_prices(links):
         results = []
         for link in links:
             driver.get(link)
-            results.append(
-                price_finder(
-                    url = link,bs=BS(driver.page_source,'lxml')
+            try:
+                results.append(
+                    price_finder(
+                        url = link,bs=BS(driver.page_source,'lxml')
+                        )
                     )
-                )
+            except AttributeError:
+                results.append(price_finder(link))
         driver.quit()
         return results
     except Exception as excpt:
         driver.quit()
         raise excpt
-import saveto
-links  = saveto.load('quad_links')
-products = get_prices(links)
+if __name__ == "__main__":
+    
+    import saveto
+    links  = saveto.load('quad_links')
+    products = get_prices(links)

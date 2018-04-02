@@ -6,6 +6,7 @@ import datetime
 
 user_agent = UserAgent().chrome
 re_words = lambda n: re.compile(r"( ?[^ ]+ ?)"+"{0,"+str(n-1)+"}"+r"[^ ]+")
+debug = None
 def get_page(url):
     page = None
     while not page:
@@ -56,9 +57,12 @@ class price_finder:
             
     def _get_product_info_(self):
         funcs = price_finder.page_funcs[self.info_url.netloc]
+        print(self.url)
+ 
         return {
             "product_name":self.words.match(
                 funcs["name"](self.bs)
                 ).group(0),
             "price":funcs["price"](self.bs).replace("$",""),
             }
+    
